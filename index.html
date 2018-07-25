@@ -12,7 +12,7 @@
     <title>IU World</title>
   </head>
   <body>
-  	
+
 
   	<div class="pimg1">
   		<div class="ptext">
@@ -58,10 +58,50 @@
   		</p>
   		<h2>Discography</h2>
   		<pre class="pre">
-Growing Up (2009)
-Last Fantasy (2011)
-Modern Times (2013)
-Palette (2017)
+        using MySql.Data.MySqlClient;
+
+
+
+        namespace loginForm
+        {
+            public partial class Form1 : Form
+            {
+
+                MySqlConnection con = new MySqlConnection(@"Data Source=localhost;port=3306;Initial Catalog=test1;username=root;password='';SslMode=none");
+                int i;
+                public Form1()
+                {
+                    InitializeComponent();
+                }
+
+                private void button1_Click(object sender, EventArgs e)
+                {
+                    i = 0;
+                    con.Open();
+                    MySqlCommand cmd = con.CreateCommand();
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = "Select * FROM login where username='"+textBox1.Text+"' and password='"+textBox2.Text+"'";
+                    cmd.ExecuteNonQuery();
+                    DataTable dt = new DataTable();
+                    MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+                    da.Fill(dt);
+                    i = Convert.ToInt32(dt.Rows.Count.ToString());
+
+                    if(i==0)
+                    {
+                        incorrect.Text = "Incorrect username or password";
+                    }
+                    else
+                    {
+                        this.Hide();
+                        Form2 fm = new Form2();
+                        fm.Show();
+                    }
+
+                    con.Close();
+                }
+            }
+        }
 		</pre>
   	</section>
   	<div class="pimg4">
